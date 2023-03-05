@@ -6,16 +6,18 @@ const tabs = (headerSelector, tabSelector, contentSelector, activeClass) => {
     function hideTabContent() {
         content.forEach(item => {
             item.style.display = "none";
+            item.classList.remove('animated', 'fadeIn');
         });
-
+  
         tab.forEach(item => {
-            item.classList.remove(activeClass, 'fadeSlider');
+            item.classList.remove(activeClass, 'animated', 'fadeIn');
         });
     }
 
     function showTabContent(i = 0) {
         content[i].style.display = "block";
-        tab[i].classList.add(activeClass, 'fadeSlider');
+        content[i].classList.add('animated', 'fadeIn');
+        tab[i].classList.add(activeClass, 'animated', 'fadeIn');
     }
 
     hideTabContent();
