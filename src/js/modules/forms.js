@@ -1,13 +1,10 @@
-const forms = () => {
-    const form = document.querySelectorAll('form'),
-          inputs = document.querySelectorAll('input'),
-          phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+import checkNumInputs from "./checkNumInputs";
 
-    phoneInputs.forEach(item => {
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/\D/, '');
-        });
-    });
+const forms = (state) => {
+    const form = document.querySelectorAll('form'),
+          inputs = document.querySelectorAll('input');
+
+    checkNumInputs('input[name="user_phone"]');
 
     const message = {
         loading: 'Загрузка...',
@@ -30,7 +27,29 @@ const forms = () => {
         inputs.forEach(item => {
             item.value = '';
         });
-    }
+    };
+
+    const clearState = () => {
+        for (let key in state) {
+            switch(key) {
+                case 'height':
+                    state.height = 0;
+                    break;
+                case 'width':
+                    state.width = 0;
+                    break;
+                case 'type':
+                    state.type = "tree";
+                    break;
+                case 'form':
+                    state.form = 0;
+                    break;
+                case 'profile':
+                    delete state.profile;
+            }
+            // delete state[key];
+        }
+    };
 
     form.forEach(item => {
         item.addEventListener('submit', (e => {
@@ -42,6 +61,12 @@ const forms = () => {
 
             const formData = new FormData(item);
 
+            if (item.getAttribute('data-calc') === 'end') {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
+
             postData('assets/server.php', formData)
                 .then(res => {
                     console.log(res);
@@ -50,6 +75,13 @@ const forms = () => {
                 .catch(() => statusMessage.textContent = message.failure)
                 .finally(() => {
                     clearInput();
+                    clearState();
+                    if (item.getAttribute('data-calc') === "end") {
+                        setTimeout(() => {
+                          item.closest('.popup_calc_end').style.display = "none";
+                          document.body.style.overflow = "scroll";
+                        }, 2000);
+                    }
                     setTimeout(() => {
                         statusMessage.remove();
                     },5000);
