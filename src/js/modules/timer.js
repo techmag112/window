@@ -8,8 +8,8 @@ const timer = (id, deadline) => {
               seconds = Math.floor((t / 1000) % 60);
       
         return t > 0 ? 
-             { total : t, days, hours, minutes, seconds } :
-             { total : 0, days : 0, hours : 0, minutes : 0, seconds :0 };
+             {total : t, days, hours, minutes, seconds} :
+             {total : 0, days : 0, hours : 0, minutes : 0, seconds :0};
     };
    
     function getZero(num) {

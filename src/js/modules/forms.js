@@ -87,7 +87,7 @@ const forms = (state) => {
                     },5000);
                 });
         }));
-    })
+    });
 };
 
 export default forms;
